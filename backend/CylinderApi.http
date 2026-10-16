@@ -1,0 +1,6 @@
+@CylinderApi_HostAddress = http://localhost:5226
+
+GET {{CylinderApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
