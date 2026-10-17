@@ -17,7 +17,7 @@ public class AppDbContext : DbContext
         var cylinder = modelBuilder.Entity<Cylinder>();
         cylinder.HasIndex(c => c.SerialNumber).IsUnique();
         cylinder.Property(c => c.Status).HasConversion<string>();
-        cylinder.Property(c=>c.LastUpdated).HasConversion(v=>v, v=>DateTime.SpecifyKind(v,DateTimeKind.Utc));
+        cylinder.Property(c => c.LastUpdated).HasConversion(v=>v, v=>DateTime.SpecifyKind(v,DateTimeKind.Utc));
     }
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
@@ -43,7 +43,7 @@ public class AppDbContext : DbContext
             if (entry.State == EntityState.Modified || entry.Entity.LastUpdated == default)
                 entry.Entity.LastUpdated = now;
 
-            entry.Entity.SearchKey = $"{entry.Entity.SerialNumber} {entry.Entity.CustomerName}".ToUpperInvariant();
+            entry.Entity.SearchKey = $"{entry.Entity.SerialNumber} {entry.Entity.CustomerName}".Normalize().ToUpperInvariant();
         }
     }
 }

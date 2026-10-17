@@ -33,8 +33,10 @@ public static class CylinderRules
 
     public static string? NormalizeCustomerName(string? value)
     {
-        var trimmed = value?.Trim().Normalize();
-        return string.IsNullOrEmpty(trimmed) ? null : trimmed;
+        if (value is null)
+            return null;
+        var cleaned = Regex.Replace(value.Normalize(), @"\s+", " ").Trim();
+        return cleaned.Length == 0 ? null : cleaned;
     }
 
     public static bool CanTransition(CylinderStatus from, CylinderStatus to) => AllowedTransitions[from].Contains(to);
