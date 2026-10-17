@@ -1,7 +1,7 @@
 import { PAGE_SIZES } from '../utils/constant'
 import Select from './Select'
 
-const navBtn = 'rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-sm hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-40'
+const navBtn = 'rounded-lg border border-brand-soft bg-white px-3 py-1.5 text-sm hover:bg-mauve-50 disabled:cursor-not-allowed disabled:opacity-40'
 
 export default function Pagination({ page, pageSize, totalCount, onPageChange, onPageSizeChange }) {
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))

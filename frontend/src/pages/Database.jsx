@@ -5,7 +5,7 @@ import { STATUSES } from '../utils/constant'
 import TableData from '../components/TableData'
 import Pagination from '../components/Pagination'
 import FormModal from '../components/FormModal'
-import StatusModal from '../components/StatusChangeModals'
+import StatusChangeModal from '../components/StatusChangeModal'
 import Select from '../components/Select'
 
 export default function Database() {
@@ -109,7 +109,7 @@ export default function Database() {
         <FormModal cylinder={modal.cylinder} onClose={closeModal} onSaved={load} />
       )}
       {modal?.type === 'status' && (
-        <StatusModal cylinder={modal.cylinder} onClose={closeModal} onSaved={load} />
+        <StatusChangeModal cylinder={modal.cylinder} onClose={closeModal} onSaved={load} />
       )}
     </div>
   )

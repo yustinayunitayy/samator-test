@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import Modal from './Modals'
-import Field from './TextFields'
+import Modal from './Modal'
+import Field from './TextField'
 import StatusBadge from './StatusBadge'
 import { ALLOWED_TRANSITIONS, CUSTOMER_NAME_MAX } from '../utils/constant'
 import { changeStatus } from '../utils/api'
 import { confirmAction, showError, showToast } from '../utils/alerts'
 import Select from './Select'
 
-const inputCls = 'w-full rounded-lg border border-stone-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100'
+const inputCls = 'w-full rounded-lg border border-brand-soft px-3 py-2 outline-none focus:border-brand'
 
-export default function StatusModal({ cylinder, onClose, onSaved }) {
+export default function StatusChangeModal({ cylinder, onClose, onSaved }) {
   const options = ALLOWED_TRANSITIONS[cylinder.status]
   const [newStatus, setNewStatus] = useState(options[0] ?? '')
   const [customerName, setCustomerName] = useState('')
@@ -58,7 +58,7 @@ export default function StatusModal({ cylinder, onClose, onSaved }) {
 
   return (
     <Modal title="Change status" subtitle={cylinder.serialNumber} onClose={onClose}>
-      <p className="mb-4 text-sm text-stone-600">
+      <p className="mb-4 text-sm text-mauve-600">
         Current status: <StatusBadge status={cylinder.status} />
       </p>
 
@@ -88,7 +88,7 @@ export default function StatusModal({ cylinder, onClose, onSaved }) {
         )}
 
         <div className="mt-6 flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="rounded-lg border border-stone-300 px-4 py-2 hover:bg-stone-50">
+          <button type="button" onClick={onClose} className="rounded-lg border border-brand-soft px-4 py-2 hover:bg-mauve-50">
             Cancel
           </button>
           <button type="submit" disabled={saving} className="rounded-lg bg-brand px-4 py-2 font-medium text-white hover:bg-brand-soft hover:text-brand disabled:opacity-50">

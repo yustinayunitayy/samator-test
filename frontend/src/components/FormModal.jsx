@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Modal from './Modals'
-import Field from './TextFields'
+import Modal from './Modal'
+import Field from './TextField'
 import { GAS_TYPES, SERIAL_PATTERN } from '../utils/constant'
 import { createCylinder, updateCylinder } from '../utils/api'
 import { confirmAction, showError, showToast } from '../utils/alerts'

@@ -1,7 +1,7 @@
 import StatusBadge from './StatusBadge'
 
-const stateBox = 'rounded-xl border border-stone-200 bg-white p-9 text-center text-stone-600'
-const actionBtn = 'rounded-md border border-stone-300 bg-white px-2.5 py-1 text-xs hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-40'
+const stateBox = 'rounded-xl border border-mauve-200 bg-white p-9 text-center text-mauve-600'
+const actionBtn = 'rounded-md border border-brand-soft bg-white px-2.5 py-1 text-sm hover:bg-mauve-50 disabled:cursor-not-allowed disabled:opacity-40'
 const btnBase = 'rounded-md px-2.5 py-1 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40'
 const btnEdit = `${btnBase} border border-brand text-brand hover:bg-brand-soft`
 const btnStatus = `${btnBase} bg-brand text-white hover:bg-brand-light`
@@ -14,7 +14,7 @@ export default function TableData({ items, loading, error, onRetry, onEdit, onSt
   if (error) {
     return (
       <div className={`${stateBox} border-red-200 bg-red-50`}>
-        <h3 className="mb-1 font-semibold text-stone-900">Failed to load data</h3>
+        <h3 className="mb-1 font-semibold text-mauve-900">Failed to load data</h3>
         <p className="mb-3">{error.message}</p>
         <button onClick={onRetry} className={actionBtn}>Retry</button>
       </div>
@@ -24,7 +24,7 @@ export default function TableData({ items, loading, error, onRetry, onEdit, onSt
   if (items.length === 0) {
     return (
       <div className={stateBox}>
-        <h3 className="mb-1 font-semibold text-stone-900">No data found</h3>
+        <h3 className="mb-1 font-semibold text-mauve-900">No data found</h3>
         <p>Please try using another keyword or status.</p>
       </div>
     )

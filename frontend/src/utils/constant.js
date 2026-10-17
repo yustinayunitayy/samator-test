@@ -11,7 +11,7 @@ export const ALLOWED_TRANSITIONS = {
 }
 
 export const STATUS_STYLES = {
-  Empty: 'bg-stone-100 text-stone-600',
+  Empty: 'bg-mauve-100 text-mauve-600',
   Filled: 'bg-brand-soft/50 text-brand',
   Delivered: 'bg-green-100 text-green-800',
   InMaintenance: 'bg-orange-100 text-orange-800',

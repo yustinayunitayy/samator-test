@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './Layout/Layout'
 import Dashboard from './pages/Dashboard'
-import Cylinders from './pages/Database'
+import Database from './pages/Database'
 
 export default function App() {
   return (
@@ -9,7 +9,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/cylinders" element={<Cylinders />} />
+          <Route path="/cylinders" element={<Database />} />
         </Route>
       </Routes>
     </BrowserRouter>
