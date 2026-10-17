@@ -16,6 +16,7 @@ public static class CylinderRules
         [CylinderStatus.Retired] = Array.Empty<CylinderStatus>(),
     };
     public const int CustomerNameMaxLength = 120;
+    public const int IdleDays = 30;
 
     // Rules to anticipate the Problem Background (Data Formatting Cleaning)
     public static string CleanSerialNum(string? value) => (value ?? string.Empty).Trim().ToUpperInvariant();

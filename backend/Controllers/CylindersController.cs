@@ -67,6 +67,62 @@ public class CylindersController : ControllerBase
         return Ok(new PagedResult<Cylinder>(items, page, pageSize, totalCount));
     }
 
+    // Dashboard summary (extra endpoint)
+    [HttpGet("summary")]
+    public async Task<ActionResult<CylinderSummary>> GetSummary()
+    {
+        var now = DateTime.UtcNow;
+        var idleBefore = now.AddDays(-CylinderRules.IdleDays);
+
+        var rows = await _db.Cylinders.AsNoTracking()
+            .Select(c => new { c.Id, c.SerialNumber, c.Status, c.GasType, c.CustomerName, c.LastUpdated })
+            .ToListAsync();
+
+        var total = rows.Count;
+        var retired = rows.Count(r => r.Status == CylinderStatus.Retired);
+        var delivered = rows.Count(r => r.Status == CylinderStatus.Delivered);
+
+        var byStatus = Enum.GetValues<CylinderStatus>()
+            .ToDictionary(s => s.ToString(), s => rows.Count(r => r.Status == s));
+
+        var byGasType = CylinderRules.GasTypes
+            .ToDictionary(g => g, g => rows.Count(r => r.GasType == g));
+
+        var activeCustomers = rows
+            .Where(r => r.Status == CylinderStatus.Delivered && r.CustomerName != null)
+            .Select(r => r.CustomerName)
+            .Distinct()
+            .Count();
+
+        // Last 6 months, oldest first, keyed as "2026-05"
+        var movementByMonth = Enumerable.Range(0, 6)
+            .Select(i => now.AddMonths(-5 + i))
+            .ToDictionary(
+                d => d.ToString("yyyy-MM"),
+                d => rows.Count(r => r.LastUpdated.Year == d.Year && r.LastUpdated.Month == d.Month));
+
+        var idle = rows
+            .Where(r => r.Status != CylinderStatus.Retired && r.LastUpdated < idleBefore)
+            .OrderBy(r => r.LastUpdated)
+            .ToList();
+
+        var idleCylinders = idle
+            .Take(5)
+            .Select(r => new IdleCylinder(r.Id, r.SerialNumber, r.Status.ToString(), (int)(now - r.LastUpdated).TotalDays))
+            .ToList();
+
+        return Ok(new CylinderSummary(
+            total,
+            total - retired,
+            activeCustomers,
+            delivered,
+            idle.Count,
+            byStatus,
+            byGasType,
+            movementByMonth,
+            idleCylinders));
+    }
+
     // Fetch Each Cylinders Data
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Cylinder>> GetById(int id)
