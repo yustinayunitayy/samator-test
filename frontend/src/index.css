@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+  --color-brand: #313178;
+  --color-brand-light: #7474b0;
+  --color-brand-soft: #cfcfe8;
+}
+
+body {
+  @apply bg-brand-soft/10 text-mauve-900
+}
+
+.swal2-popup {
+  font-family: var(--font-sans) !important;
+  border-radius: 14px !important;
+}
+
+.swal2-confirm {
+  background: #313178 !important;
+}
+
+.swal2-html-container ul {
+  text-align: left;
+  padding-left: 18px;
+}
