@@ -1,6 +1,6 @@
 import StatusBadge from './StatusBadge'
 import { IDLE_DAYS } from '../utils/constant'
-import { daysSince } from '../utils/date-format'
+import { daysSince, formatTime } from '../utils/date-format'
 
 const stateBox = 'rounded-xl border border-mauve-200 bg-white p-9 text-center text-mauve-600'
 const actionBtn = 'rounded-md border border-brand-soft bg-white px-2.5 py-1 text-xs hover:bg-mauve-50 disabled:cursor-not-allowed disabled:opacity-40'
@@ -69,8 +69,10 @@ export default function TableData({ data, loading, error, onRetry, onEdit, onSta
                 </td>
                 <td className="px-4 py-3 tabular-nums">
                   {new Date(c.lastUpdated).toLocaleDateString()}
-                  {idle && <div className="text-xs text-amber-700">idle {daysSince(c.lastUpdated)} days</div>}
+                  <div className="text-mauve-400">{formatTime(c.lastUpdated)}</div>
+                   {idle && <div className="text-xs text-amber-700">idle {daysSince(c.lastUpdated)} days</div>}
                 </td>
+
                 <td className="px-4 py-3">
                   <div className="flex justify-center gap-1.5">
                     <button className={btnEdit} onClick={() => onEdit(c)}>Edit</button>
