@@ -1,15 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: 'Montserrat', system-ui, sans-serif;
   --color-brand: #313178;
-  --color-brand-light: #7474b0;
-  --color-brand-soft: #cfcfe8;
+  --color-brand-light: #5c5c9e;
+  --color-brand-soft: #e4e4f1;
+}
+
+html {
+  color-scheme: light;
 }
 
 body {
-  @apply bg-brand-soft/10 text-mauve-900
+  background-color: #f7f7f9;
+  color: var(--color-mauve-900);
 }
 
 .swal2-popup {
@@ -17,11 +21,36 @@ body {
   border-radius: 14px !important;
 }
 
-.swal2-confirm {
-  background: #313178 !important;
+.swal2-popup:not(.swal2-toast) {
+  padding: 1.75rem !important;
+  color: var(--color-mauve-900) !important;
 }
 
 .swal2-html-container ul {
   text-align: left;
   padding-left: 18px;
+  list-style: disc;
+}
+
+.swal2-actions {
+  gap: 0.5rem;
+}
+
+.swal2-styled.swal2-confirm {
+  background: var(--color-brand) !important;
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+}
+
+.swal2-styled.swal2-cancel {
+  background: #fff !important;
+  color: var(--color-mauve-700) !important;
+  border: 1px solid var(--color-mauve-300) !important;
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+}
+
+.swal2-styled:focus {
+  box-shadow: 0 0 0 3px var(--color-brand-soft) !important;
 }

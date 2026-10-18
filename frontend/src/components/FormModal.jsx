@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Modal from './Modal'
 import Field from './TextField'
+import Select from './Select'
 import { GAS_TYPES, SERIAL_PATTERN } from '../utils/constant'
 import { createCylinder, updateCylinder } from '../utils/api'
 import { confirmAction, showError, showToast } from '../utils/alerts'
-import Select from './Select'
 
 const inputCls = 'w-full rounded-lg border border-brand-soft px-3 py-2 outline-none focus:border-brand'
 
