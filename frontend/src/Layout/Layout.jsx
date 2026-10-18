@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import logo from '../assets/Logo.png'
 
@@ -34,13 +33,15 @@ function NavItems() {
           key={l.to}
           to={l.to}
           end={l.to === '/'}
+          title={l.label}
           className={({ isActive }) =>
-            `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${isActive ? 'bg-brand text-white' : 'text-mauve-700 hover:bg-brand-soft hover:text-brand'
+            `flex items-center justify-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition md:justify-start ${
+              isActive ? 'bg-brand text-white' : 'text-mauve-700 hover:bg-brand-soft hover:text-brand'
             }`
           }
         >
           <l.Icon className="h-5 w-5 shrink-0" />
-          {l.label}
+          <span className="hidden md:inline">{l.label}</span>
         </NavLink>
       ))}
     </nav>
@@ -50,8 +51,8 @@ function NavItems() {
 export default function Layout() {
   return (
     <div className="flex min-h-screen">
-      <aside className="w-60 shrink-0 border-r border-mauve-200 bg-white px-4 py-6">
-        <img src={logo} alt="Samator" className="mb-8 w-auto px-2" />
+      <aside className="w-16 shrink-0 border-r border-mauve-200 bg-white px-2 py-6 md:w-60 md:px-4">
+        <img src={logo} alt="Samator" className="mb-8 hidden w-auto px-2 md:block" />
         <NavItems />
       </aside>
       <main className="min-w-0 flex-1">

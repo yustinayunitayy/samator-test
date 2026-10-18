@@ -2,12 +2,12 @@ import { useState } from 'react'
 import Modal from './Modal'
 import Field from './TextField'
 import StatusBadge from './StatusBadge'
-import { ALLOWED_TRANSITIONS, CUSTOMER_NAME_MAX } from '../utils/constant'
+import Select from './Select'
+import { ALLOWED_TRANSITIONS, CUSTOMER_NAME_MAX, STATUS_LABELS } from '../utils/constant'
 import { changeStatus } from '../utils/api'
 import { confirmAction, showError, showToast } from '../utils/alerts'
-import Select from './Select'
 
-const inputCls = 'w-full rounded-lg border border-brand-soft px-3 py-2 outline-none focus:border-brand'
+const inputCls = 'w-full rounded-lg border border-mauve-300 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15'
 
 export default function StatusChangeModal({ cylinder, onClose, onSaved }) {
   const options = ALLOWED_TRANSITIONS[cylinder.status]
@@ -35,7 +35,7 @@ export default function StatusChangeModal({ cylinder, onClose, onSaved }) {
 
     const detail = needsCustomer ? `<br><small>Customer: ${customerName.trim()}</small>` : ''
     const ok = await confirmAction(
-      `Change <b>${cylinder.serialNumber}</b> from ${cylinder.status} to <b>${newStatus}</b>?${detail}`,
+      `Change <b>${cylinder.serialNumber}</b> from ${STATUS_LABELS[cylinder.status]} to <b>${STATUS_LABELS[newStatus]}</b>?${detail}`,
       'Yes, update',
     )
     if (!ok) return
@@ -46,29 +46,29 @@ export default function StatusChangeModal({ cylinder, onClose, onSaved }) {
         status: newStatus,
         customerName: needsCustomer ? customerName.trim() : null,
       })
-      showToast(`Status changed to ${newStatus}`)
+      showToast(`Status changed to ${STATUS_LABELS[newStatus]}`)
       onSaved()
       onClose()
     } catch (err) {
-      showError(err.errormsg)
+      showError(err)
     } finally {
       setSaving(false)
     }
   }
 
   return (
-    <Modal title="Change status" subtitle={cylinder.serialNumber} onClose={onClose}>
+    <Modal title={`Change status - ${cylinder.serialNumber}`} onClose={onClose}>
       <p className="mb-4 text-sm text-mauve-600">
         Current status: <StatusBadge status={cylinder.status} />
       </p>
 
       <form onSubmit={handleSubmit} noValidate>
-        <Field label="New status *" hint={`Only transitions allowed from ${cylinder.status} are listed.`}>
+        <Field label="New status *" hint={`Only transitions allowed from ${STATUS_LABELS[cylinder.status]} are listed.`}>
           <Select
             className="w-full"
             value={newStatus}
             onChange={setNewStatus}
-            options={options.map((s) => ({ value: s, label: s }))}
+            options={options.map((s) => ({ value: s, label: STATUS_LABELS[s] }))}
           />
         </Field>
 
@@ -88,11 +88,11 @@ export default function StatusChangeModal({ cylinder, onClose, onSaved }) {
         )}
 
         <div className="mt-6 flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="rounded-lg border border-brand-soft px-4 py-2 hover:bg-mauve-50">
+          <button type="button" onClick={onClose} className="rounded-lg border border-mauve-300 bg-white px-3.5 py-2 text-sm font-medium text-mauve-800 hover:bg-mauve-50">
             Cancel
           </button>
-          <button type="submit" disabled={saving} className="rounded-lg bg-brand px-4 py-2 font-medium text-white hover:bg-brand-soft hover:text-brand disabled:opacity-50">
-            {saving ? 'Updating…' : 'Update'}
+          <button type="submit" disabled={saving} className="rounded-lg bg-brand px-3.5 py-2 text-sm font-medium text-white hover:bg-brand-light disabled:opacity-50">
+            {saving ? 'Updating...' : 'Update'}
           </button>
         </div>
       </form>

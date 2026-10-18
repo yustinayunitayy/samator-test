@@ -22,8 +22,9 @@ public class CylindersController : ControllerBase
     public async Task<ActionResult<PagedResult<Cylinder>>> GetAll(
         [FromQuery] string? search,
         [FromQuery] string? status,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 10)
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] bool idleOnly = false)
     {
         if (page < 1)
             ModelState.AddModelError("page", "Page must be 1 or greater.");
@@ -52,7 +53,13 @@ public class CylindersController : ControllerBase
 
         if (statusFilter is CylinderStatus wantedStatus)
             query = query.Where(c => c.Status == wantedStatus);
-
+            
+        // Dashboard filter: not updated for IdleDays, retired excluded
+        if (idleOnly)
+        {
+            var idleBefore = DateTime.UtcNow.AddDays(-CylinderRules.IdleDays);
+            query = query.Where(c => c.Status != CylinderStatus.Retired && c.LastUpdated < idleBefore);
+        }
         var totalCount = await query.CountAsync();
         var skip = (long)(page - 1) * pageSize;
         var items = skip >= totalCount

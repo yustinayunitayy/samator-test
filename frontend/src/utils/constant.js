@@ -37,3 +37,4 @@ export const STATUS_COLORS = {
 export const SERIAL_PATTERN = /^CYL-[0-9]{6}$/i
 export const CUSTOMER_NAME_MAX = 120
 export const PAGE_SIZES = [10, 25, 50]
+export const IDLE_DAYS = 30

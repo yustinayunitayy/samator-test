@@ -10,13 +10,13 @@ export default function Modal({ title, onClose, children }) {
   }, [onClose])
 
   return (
-    <div className="fixed inset-0 z-90 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-90 flex items-center justify-center bg-mauve-950/40 backdrop-blur-[2px] p-4" onClick={onClose}>
       <div
         className="w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between">
-          <h2 className="text-xl font-semibold text-brand">
+          <h2 className="text-lg font-semibold text-mauve-900">
             {title}
           </h2>
           <button
@@ -28,7 +28,7 @@ export default function Modal({ title, onClose, children }) {
             ✕
           </button>
         </div>
-        <div className="mt-3">{children}</div>
+        <div className="mt-4">{children}</div>
       </div>
     </div>
   )

@@ -13,7 +13,7 @@ export default function Pagination({ page, pageSize, totalCount, onPageChange, o
       <div className="flex items-center gap-2">
         <span>Showing {from}–{to} of {totalCount}</span>
         <Select
-          className="w-28"
+          className="w-32"
           value={String(pageSize)}
           onChange={(v) => onPageSizeChange(Number(v))}
           options={PAGE_SIZES.map((n) => ({ value: String(n), label: `${n} / page` }))}
