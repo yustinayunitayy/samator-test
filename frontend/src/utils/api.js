@@ -1,39 +1,45 @@
 const BASE_URL = import.meta.env.VITE_API_URL ?? ''
+const OFFLINE_MESSAGE = "Couldn't reach the server, please try again."
 
 async function request(path, options = {}) {
-    const response = await fetch(BASE_URL + path, {
-        headers: { 'Content-type': 'application/json' },
-        ...options
-    })
+
+    // Connection issue handler
+    let response
+    try {
+        response = await fetch(BASE_URL + path, {
+        headers: { 'Content-Type': 'application/json' },
+        ...options,
+        })
+    } catch {
+        throw Object.assign(new Error(OFFLINE_MESSAGE), { status: 0, messages: [OFFLINE_MESSAGE] })
+    }
 
     if (response.ok) {
         return response.json()
     }
 
     // Error Handling Response
-    let errormsg = [`Request Failed: (${response.status}).`]
+    let messages = [`Request failed with status ${response.status}.`]
     try {
-        const cause = await response.json()
-        if (cause.errors) {
-            errormsg = Object.values(cause.errors).flat()
-        } else if (cause.title) {
-            errormsg = [cause.title]
+        const problem = await response.json()
+        if (problem.errors) {
+        messages = Object.values(problem.errors).flat()
+        } else if (problem.title) {
+        messages = [problem.title]
         }
     } catch {
         // Keep the fallback message
     }
 
-    const error = new Error(errormsg.join(' '))
-    throw Object.assign(new Error(errormsg.join(' ')), {
-        status: response.status,
-        errormsg,
-    })
+    throw Object.assign(new Error(messages.join(' ')), { status: response.status, messages })
 }
+
 // API call
-export function getCylinders({ search = '', status = '', page = 1, pageSize = 10 } = {}) {
+export function getCylinders({ search = '', status = '', page = 1, pageSize = 10, idleOnly = false } = {}) {
     const params = new URLSearchParams({ page: String(page), pageSize: String(pageSize) })
     if (search) params.set('search', search)
     if (status) params.set('status', status)
+    if (idleOnly) params.set('idleOnly', 'true')
     return request(`/api/cylinders?${params}`)
 }
 

@@ -1,22 +1,30 @@
 import Swal from 'sweetalert2'
 
-export async function confirmAction(html, confirmText='Save'){
+// Sweet alert button placement
+const base = {
+  reverseButtons: true,
+  focusConfirm: false,
+  focusCancel: true,
+}
+
+export async function confirmAction(html, confirmText = 'Yes, save', title = 'Please confirm'){
     const result = await Swal.fire({
-        title:'Confirm',
+        ...base,
+        title,
         html,
         icon:'question',
         showCancelButton: true,
-        confirmButtonText:confirmText,
+        cancelButtonText: 'Go back',
+        confirmButtonText: confirmText,
     })
     return result.isConfirmed
 }
 
-export function showError(messages, title='Error Occurred'){
-    const list = messages.map((m) => `<li>${m}</li>`).join('')
-    const html = messages.length === 1 ? messages[0] : `<ul style="text-align:left>${list}</ul>`
-    return Swal.fire({
-        title, html, icon:'error'
-    })
+
+export function showError(error, title = 'Error Occurred, Unable to save') {
+  const messages = error.messages ?? [error.message]
+  const html = messages.length === 1 ? messages[0] : `<ul>${messages.map((m) => `<li>${m}</li>`).join('')}</ul>`
+  return Swal.fire({ ...base, title, html, icon: 'error', confirmButtonText: 'OK' })
 }
 
 export function showToast(title) {
