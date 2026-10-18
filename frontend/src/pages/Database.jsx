@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getCylinders } from '../utils/api'
 import { useQuery } from '../utils/useQuery'
-import { STATUSES, STATUS_LABELS } from '../utils/constant'
+import { IDLE_DAYS, STATUSES, STATUS_LABELS } from '../utils/constant'
 import TableData from '../components/TableData'
 import Pagination from '../components/Pagination'
 import FormModal from '../components/FormModal'
@@ -10,11 +10,12 @@ import StatusChangeModal from '../components/StatusChangeModal'
 import Select from '../components/Select'
 
 export default function Database() {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
 
-  // filters
-  const [keyword, setKeyword] = useState('')
-  const [search, setSearch] = useState('')
+  // filters (status, search, and idle can come from dashboard links)
+  const idleOnly = searchParams.get('idle') === '1'
+  const [keyword, setKeyword] = useState(searchParams.get('search') ?? '')
+  const [search, setSearch] = useState(keyword)
   const [status, setStatus] = useState(searchParams.get('status') ?? '')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
@@ -22,8 +23,8 @@ export default function Database() {
   // data
   const [modal, setModal] = useState(null)
   const fetchList = useCallback(
-    () => getCylinders({ search, status, page, pageSize }),
-    [search, status, page, pageSize],
+    () => getCylinders({ search, status, page, pageSize, idleOnly }),
+    [search, status, page, pageSize, idleOnly],
   )
   const list = useQuery(fetchList)
 
@@ -42,6 +43,13 @@ export default function Database() {
 
   function handlePageSizeChange(size) {
     setPageSize(size)
+    setPage(1)
+  }
+
+  function clearIdle() {
+    const next = new URLSearchParams(searchParams)
+    next.delete('idle')
+    setSearchParams(next, { replace: true })
     setPage(1)
   }
 
@@ -73,6 +81,19 @@ export default function Database() {
           + Add cylinder
         </button>
       </div>
+
+      {idleOnly && (
+        <div className="mb-3 text-xs">
+          <button
+            type="button"
+            onClick={clearIdle}
+            title="Remove this filter"
+            className="rounded-full bg-amber-50 px-2.5 py-1 font-medium text-amber-800 hover:bg-amber-100"
+          >
+            Idle over {IDLE_DAYS} days x
+          </button>
+        </div>
+      )}
 
       <TableData
         data={list.data}

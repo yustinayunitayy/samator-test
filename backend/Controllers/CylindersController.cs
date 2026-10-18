@@ -115,7 +115,7 @@ public class CylindersController : ControllerBase
 
         var idleCylinders = idle
             .Take(5)
-            .Select(r => new IdleCylinder(r.Id, r.SerialNumber, r.Status.ToString(), (int)(now - r.LastUpdated).TotalDays))
+            .Select(r => new IdleCylinder(r.Id, r.SerialNumber, r.Status.ToString(), r.LastUpdated, (int)(now - r.LastUpdated).TotalDays))
             .ToList();
 
         return Ok(new CylinderSummary(

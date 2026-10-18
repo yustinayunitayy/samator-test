@@ -3,7 +3,7 @@ namespace CylinderApi.Models;
 public record CylinderDataRequest(string? SerialNumber, string? GasType);
 public record StatusChangesRequest(string? Status, string? CustomerName);
 public record PagedResult<T>(IReadOnlyList<T> Items, int Page, int PageSize, int TotalCount);
-public record IdleCylinder(int Id, string SerialNumber, string Status, int IdleDays);
+public record IdleCylinder(int Id, string SerialNumber, string Status, DateTime LastUpdated, int IdleDays);
 public record CylinderSummary(
     int Total,
     int Active,

@@ -35,8 +35,8 @@ function NavItems() {
           end={l.to === '/'}
           title={l.label}
           className={({ isActive }) =>
-            `flex items-center justify-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition md:justify-start ${
-              isActive ? 'bg-brand text-white' : 'text-mauve-700 hover:bg-brand-soft hover:text-brand'
+            `flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition ${
+              isActive ? 'bg-brand-soft/70 text-brand' : 'text-mauve-600 hover:bg-mauve-100 hover:text-mauve-900'
             }`
           }
         >
